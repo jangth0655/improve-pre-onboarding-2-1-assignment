@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Segment } from '../model/types';
+import { CarListType, Segment } from '../model/types';
 import HttpClient from './httpClient';
 import HttpError from './httpError';
 
@@ -14,11 +14,8 @@ export default class CarService {
       return data;
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error);
-        if (axios.isAxiosError(error) && error.response) {
-          console.log('response', error.response);
-          console.log('message', error.message);
-          throw new HttpError(error.status, error.message);
+        if (axios.isAxiosError(error)) {
+          throw new HttpError(error.response?.status, error.message);
         }
       }
     }

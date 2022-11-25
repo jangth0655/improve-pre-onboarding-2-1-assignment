@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { CarList } from '../model/types';
 
 export default class HttpClient {
   private httpClient: AxiosInstance;
@@ -9,7 +10,7 @@ export default class HttpClient {
   }
 
   carList = (params?: any) => {
-    return this.httpClient({
+    return this.httpClient<CarList>({
       params,
     });
   };

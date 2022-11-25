@@ -1,6 +1,10 @@
+import useCarList from '../../hooks/useCarList';
 import Categories from './Categories';
 
 const CarList = () => {
+  const { carList, isLoading } = useCarList();
+  console.log(carList);
+
   return (
     <section>
       <Categories />

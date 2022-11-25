@@ -1,11 +1,36 @@
+import { useRouter } from 'next/router';
+import { CategoryType, Segment } from '../../model/types';
+import cls from '../../utils/cls';
+
 interface Props {
-  text: string;
+  category: CategoryType;
 }
 
-const CategoryItem = ({ text }: Props) => {
+const CategoryItem = ({ category }: Props) => {
+  const router = useRouter();
+  const activeSegment = router.query.segment;
+
+  const handleCategory = (segment: Segment | 'all') => {
+    router.push({
+      pathname: router.route,
+      query: {
+        segment,
+      },
+    });
+  };
   return (
     <div>
-      <span className='inline-block px-2 rounded-full bg-gray'>{text}</span>
+      <span
+        onClick={() => handleCategory(category.segment)}
+        className={cls(
+          activeSegment === category.segment
+            ? 'bg-black text-white'
+            : 'bg-gray',
+          'inline-block px-2 rounded-full transition-all'
+        )}
+      >
+        {category.text}
+      </span>
     </div>
   );
 };

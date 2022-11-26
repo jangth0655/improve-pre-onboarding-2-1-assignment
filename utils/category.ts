@@ -12,7 +12,7 @@ class Category {
   constructor(private categoryData: CategoryType[]) {}
 
   get categories() {
-    return this.categoryData;
+    return [...this.categoryData];
   }
 }
 

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -50,9 +50,4 @@ export const useCarList = () => {
     isLoading,
     error: error || errors,
   };
-};
-
-export const useGetQueryData = () => {
-  const queryClient = useQueryClient();
-  return queryClient.getQueryData(['carList']);
 };

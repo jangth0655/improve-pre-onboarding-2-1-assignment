@@ -11,9 +11,9 @@ import { CarListType } from '../model/types';
 const httpClient = new HttpClient();
 const carService = new CarService(httpClient);
 const useCarList = () => {
-  const {
-    query: { segment },
-  } = useRouter();
+  const router = useRouter();
+  const segment = router.query.segment;
+  const rootPath = router.asPath === '/';
 
   const [errors, setErrors] = useState('');
   const {
@@ -38,9 +38,10 @@ const useCarList = () => {
   );
 
   function filterData(data?: CarListType[]) {
-    if (segment !== 'all') {
+    if (segment !== 'all' && !rootPath) {
       return data?.filter((car) => segment === car.attribute.segment);
     }
+
     return data;
   }
 

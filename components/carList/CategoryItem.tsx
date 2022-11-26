@@ -10,7 +10,7 @@ const CategoryItem = ({ category }: Props) => {
   const router = useRouter();
   const activeSegment = router.query.segment;
 
-  const handleCategory = (segment: Segment) => {
+  const handleCategory = (segment?: Segment) => {
     router.push({
       pathname: router.route,
       query: {

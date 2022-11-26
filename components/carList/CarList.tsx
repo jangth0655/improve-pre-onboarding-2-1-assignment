@@ -1,14 +1,23 @@
+import { useEffect } from 'react';
 import useCarList from '../../hooks/useCarList';
+import CarItem from '../carItem/CarItem';
 import Categories from './Categories';
 
 const CarList = () => {
   const { carList, isLoading } = useCarList();
-  console.log(carList);
+
+  if (carList?.length === 0) {
+    <h1>차량이 없습니다.</h1>;
+  }
 
   return (
     <section>
       <Categories />
-      <div className='px-4 py-6'>CarList</div>
+      <ul className='py-6'>
+        {carList?.map((car) => (
+          <CarItem key={car.id} car={car} />
+        ))}
+      </ul>
     </section>
   );
 };

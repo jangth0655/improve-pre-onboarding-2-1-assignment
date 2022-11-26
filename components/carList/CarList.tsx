@@ -1,10 +1,11 @@
-import useCarList from '../../hooks/useCarList';
+import { useCarList } from '../../hooks/useCarList';
 import CarItem from '../carItem/CarItem';
 import Categories from './Categories';
 import ExistenceTitle from './ExistenceTitle';
 
 const CarList = () => {
   const { carList, isLoading } = useCarList();
+
   const emptyCarList = carList?.length === 0;
 
   return (

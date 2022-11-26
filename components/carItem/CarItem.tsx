@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { CarListType } from '../../model/types';
 import checkNewCar from '../../utils/checkNewCar';
 import formatter from '../../utils/formatter';
@@ -8,8 +9,20 @@ interface Props {
 }
 
 const CarItem = ({ car }: Props) => {
+  const router = useRouter();
+
+  const onCarDetail = (id: number) => {
+    router.push({
+      pathname: id + '',
+    });
+  };
+
   return (
-    <li key={car.id} className='flex border-b-2 border-black p-4'>
+    <li
+      onClick={() => onCarDetail(car.id)}
+      key={car.id}
+      className='flex border-b-2 border-black p-4'
+    >
       <div className='w-[60%] space-y-2'>
         <div className='flex flex-col font-bold'>
           <span className='text-sm'>{car.attribute.brand}</span>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -10,7 +10,8 @@ import { CarListType } from '../model/types';
 
 const httpClient = new HttpClient();
 const carService = new CarService(httpClient);
-const useCarList = () => {
+
+export const useCarList = () => {
   const router = useRouter();
   const segment = router.query.segment;
   const rootPath = router.asPath === '/';
@@ -38,10 +39,9 @@ const useCarList = () => {
   );
 
   function filterData(data?: CarListType[]) {
-    if (segment !== 'all' && !rootPath) {
+    if (segment && segment !== 'all' && !rootPath) {
       return data?.filter((car) => segment === car.attribute.segment);
     }
-
     return data;
   }
 
@@ -51,4 +51,8 @@ const useCarList = () => {
     error: error || errors,
   };
 };
-export default useCarList;
+
+export const useGetQueryData = () => {
+  const queryClient = useQueryClient();
+  return queryClient.getQueryData(['carList']);
+};

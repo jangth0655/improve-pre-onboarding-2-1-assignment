@@ -2,12 +2,13 @@ import { FuelCase, SegmentCase } from '../model/enums';
 import { FuelType, Segment } from '../model/types';
 
 class Format {
-  convertCurrency = (currency: number, month = '월') => {
+  convertCurrency = (currency?: number, month = '월') => {
+    if (!currency) return;
     const formatter = new Intl.NumberFormat('ko');
     return `${month} ${formatter.format(currency)} 원`;
   };
 
-  convertFuel = (fuel: FuelType) => {
+  convertFuel = (fuel?: FuelType) => {
     switch (fuel) {
       case 'ev':
         return FuelCase.EV;
@@ -20,7 +21,7 @@ class Format {
     }
   };
 
-  convertSegment = (segment: Segment) => {
+  convertSegment = (segment?: Segment) => {
     switch (segment) {
       case 'C':
         return SegmentCase.C;
@@ -33,6 +34,16 @@ class Format {
       default:
         return;
     }
+  };
+  convertDate = (date?: Date) => {
+    if (!date) return;
+    const newDate = new Date(date);
+    const formateDate = newDate?.toLocaleDateString('ko', {
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+    });
+    return formateDate;
   };
 }
 

@@ -5,7 +5,7 @@ const Categories = () => {
   const categories = categoryItems.categories;
 
   return (
-    <div className='px-4 py-2 border-y-2 border-y-black space-x-3 flex'>
+    <div className='px-4 py-2 space-x-3 flex border-b-2 border-black'>
       {categories.map((category) => (
         <CategoryItem key={category.segment} category={category} />
       ))}

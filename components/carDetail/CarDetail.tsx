@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCarList } from '../../hooks/useCarList';
+import { useCarItem, useCarList } from '../../hooks/useCarList';
 
 import Layout from '../Layout';
 import InfoTitle from './infoLayout/InfoTitle';
@@ -12,12 +12,7 @@ import ExistenceTitle from '../carList/ExistenceTitle';
 import NextSEO from '../NextSEO';
 
 const CarDetail = () => {
-  const { carList, isLoading } = useCarList();
-  const {
-    query: { id },
-  } = useRouter();
-
-  const car = carList?.find((car) => car.id === Number(id));
+  const { car, isLoading } = useCarItem();
 
   return (
     <Layout title='차량상세' back>

@@ -51,3 +51,16 @@ export const useCarList = () => {
     error: error || errors,
   };
 };
+
+export const useCarItem = () => {
+  const {
+    query: { id },
+  } = useRouter();
+
+  const { carList, isLoading } = useCarList();
+  const car = carList?.find((car) => car.id === Number(id));
+  return {
+    car,
+    isLoading,
+  };
+};

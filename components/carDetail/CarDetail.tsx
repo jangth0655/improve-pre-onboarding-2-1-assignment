@@ -8,12 +8,14 @@ import CarBrandWithName from './CarBrandWithName';
 import CarInfo from './CarInfo';
 import CarInsurance from './CarInsurance';
 import ExistenceTitle from '../carList/ExistenceTitle';
+import NextSEO from '../NextSEO';
 
 const CarDetail = () => {
   const { car, isLoading } = useCarItem();
 
   return (
     <Layout title='차량상세' back>
+      <NextSEO />
       {isLoading ? (
         <ExistenceTitle title='불러오는 중입니다.' />
       ) : (

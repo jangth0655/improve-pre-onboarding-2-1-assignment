@@ -1,34 +1,185 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 과제 개선해보기
 
-## Getting Started
+- 프리온보딩 교육과정을 통해 학습한 내용을 바탕으로 개선해 보았습니다.
 
-First, run the development server:
+## 🏁 프로젝트 실행 방법
 
-```bash
-npm run dev
-# or
-yarn dev
+1. 의존성 패키지를 설치합니다.
+
+```zsh
+$ npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 프로젝트를 실행합니다.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```zsh
+$ npm start
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+[배포 링크 보러가기](https://improve-pre-onboarding-2-1-assignment.vercel.app/)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+✓ 모바일 사이즈에 맞게 제작하였습니다.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+> 개선사항
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- contextAPI와 useReducer를 활용해 카테고리별 상태관리와 상태에 따른 데이터를 가져오는 부분을
+  **query string**에 따라 상태를 관리하고 데이터를 가져오도록 변경하였습니다.
+- React-query 사용
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - cache·stale time을 설정하여
+    한번 참조한 페이지는 다시 참조할 경우 **캐시데이터를 사용**하여 네트워크 부담을 줄였습니다.
+  - **react-query**에 select를 사용하여 패치한 데이터를 조작해 카테고리별 데이터를 보여주었습니다.
 
-## Deploy on Vercel
+    <br />
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - 카테고리
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  ```typescript
+  import { CategoryType } from '../model/types';
+  const categories: CategoryType[] = [
+    { text: '전체', segment: 'all' },
+    { text: '대형', segment: 'E' },
+    { text: '중형', segment: 'D' },
+    { text: '소형', segment: 'C' },
+    { text: 'SUV', segment: 'SUV' },
+  ];
+  class Category {
+    constructor(private categoryData: CategoryType[]) {}
+
+    get categories() {
+      return [...this.categoryData];
+    }
+  }
+
+  const categoryItems = new Category(categories);
+  export default categoryItems;
+  ```
+
+  - query string 사용
+
+  ```typescript
+  import { useRouter } from 'next/router';
+  import { CategoryType, Segment } from '../../model/types';
+  import cls from '../../utils/cls';
+
+  interface Props {
+    category: CategoryType;
+  }
+
+  const CategoryItem = ({ category }: Props) => {
+    const router = useRouter();
+    const activeSegment = router.query.segment;
+
+    const handleCategory = (segment?: Segment) => {
+      router.push({
+        pathname: router.route,
+        query: {
+          segment,
+        },
+      });
+    };
+    return (
+      <div>
+        <span
+          onClick={() => handleCategory(category.segment)}
+          className={cls(
+            activeSegment === category.segment
+              ? 'bg-black text-white'
+              : 'bg-gray',
+            'inline-block px-2 rounded-full transition-all'
+          )}
+        >
+          {category.text}
+        </span>
+      </div>
+    );
+  };
+  export default CategoryItem;
+  ```
+
+  - react-query default 옵션
+
+  ```typescript
+  import '../styles/globals.css';
+  import type { AppProps } from 'next/app';
+
+  import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000 * 60,
+        cacheTime: 60 * 1000 * 60,
+      },
+    },
+  });
+  export default function App({ Component, pageProps }: AppProps) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    );
+  }
+  ```
+
+  - react-query select 사용
+
+  ```typescript
+  import { useQuery } from '@tanstack/react-query';
+  import { useRouter } from 'next/router';
+  import { useState } from 'react';
+
+  import CarService from '../service/carService';
+  import HttpClient from '../service/httpClient';
+  import HttpError from '../service/httpError';
+
+  import { CarListType } from '../model/types';
+
+  const httpClient = new HttpClient();
+  const carService = new CarService(httpClient);
+
+  export const useCarList = () => {
+    const router = useRouter();
+    const segment = router.query.segment;
+    const rootPath = router.asPath === '/';
+
+    const [errors, setErrors] = useState('');
+    const {
+      data: carList,
+      isLoading,
+      error,
+    } = useQuery<CarListType[] | undefined>(
+      ['carList'],
+      async () => {
+        try {
+          const data = await carService.fetchCarList();
+          return data?.payload;
+        } catch (error) {
+          if (error instanceof HttpError) {
+            setErrors(error.errorMessage);
+          }
+        }
+      },
+      {
+        select: filterData,
+      }
+    );
+
+    function filterData(data?: CarListType[]) {
+      if (segment && segment !== 'all' && !rootPath) {
+        return data?.filter((car) => segment === car.attribute.segment);
+      }
+      return data;
+    }
+
+    return {
+      carList,
+      isLoading,
+      error: error || errors,
+    };
+  };
+  ```
+
+  <br />

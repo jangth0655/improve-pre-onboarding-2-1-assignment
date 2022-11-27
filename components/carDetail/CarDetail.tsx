@@ -17,8 +17,6 @@ const CarDetail = () => {
     query: { id },
   } = useRouter();
 
-  console.log(typeof id);
-
   const car = carList?.find((car) => car.id === Number(id));
 
   return (

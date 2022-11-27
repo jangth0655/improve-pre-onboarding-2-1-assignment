@@ -9,6 +9,7 @@ import CarBrandWithName from './CarBrandWithName';
 import CarInfo from './CarInfo';
 import CarInsurance from './CarInsurance';
 import ExistenceTitle from '../carList/ExistenceTitle';
+import NextSEO from '../NextSEO';
 
 const CarDetail = () => {
   const { carList, isLoading } = useCarList();
@@ -16,10 +17,13 @@ const CarDetail = () => {
     query: { id },
   } = useRouter();
 
+  console.log(typeof id);
+
   const car = carList?.find((car) => car.id === Number(id));
 
   return (
     <Layout title='차량상세' back>
+      <NextSEO amount={car?.amount} attribute={car?.attribute} id={car?.id} />
       {isLoading ? (
         <ExistenceTitle title='불러오는 중입니다.' />
       ) : (

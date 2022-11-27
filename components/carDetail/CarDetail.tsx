@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useCarItem } from '../../hooks/useCarList';
 
 import Layout from '../Layout';
+
 import InfoTitle from './infoLayout/InfoTitle';
 import CarAdditional from './CarAdditional';
 import CarBrandWithName from './CarBrandWithName';

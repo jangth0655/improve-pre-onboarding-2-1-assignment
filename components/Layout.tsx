@@ -1,8 +1,6 @@
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-import NextSEO from './NextSEO';
 
 interface Props {
   children: React.ReactNode;
@@ -14,10 +12,6 @@ const Layout = ({ children, title, back }: Props) => {
   const router = useRouter();
   return (
     <section className='max-w-[390px] h-[800px] m-auto'>
-      <NextSEO />
-      <Head>
-        <title>B2C 차량서비스</title>
-      </Head>
       <div className='w-full py-4 flex justify-center items-center border-b-2 relative'>
         {back && (
           <div

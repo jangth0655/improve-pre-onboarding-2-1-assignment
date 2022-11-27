@@ -1,16 +1,42 @@
-import { NextSeo } from 'next-seo';
+//import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import { useCarItem } from '../hooks/useCarList';
 
 import formatter from '../utils/formatter';
 
 const NextSEO = () => {
   const { car } = useCarItem();
-  console.log(car?.attribute.imageUrl);
-  console.log(car);
 
   return (
-    <NextSeo
-      title={`${car?.attribute?.brand} ${car?.attribute?.name}`}
+    <Head>
+      <title>{`${car?.attribute.brand} ${car?.attribute.name}`}</title>
+      <meta name='description' content={`월 ${car?.amount}원`} />
+      <meta property='og:type' content='website' />
+      <link href={car?.attribute.imageUrl} />
+      <meta
+        property='og:url'
+        content={`${process.env.PUBLIC_URL}/${car?.id}`}
+      />
+      <meta
+        name='og:title'
+        content={`${car?.attribute.brand} ${car?.attribute.name}`}
+      />
+      <meta
+        name='og:description'
+        content={formatter.convertCurrency(car?.amount)}
+      />
+      <meta property='og:image' content={car?.attribute.imageUrl} />
+      <meta property='og:image:width' content={1200 + ''} />
+      <meta property='og:image:height' content={600 + ''} />
+    </Head>
+  );
+};
+
+export default NextSEO;
+
+/**
+ <NextSeo
+      title={title ? title : 'BC2 차량서비스'}
       description={formatter.convertCurrency(car?.amount)}
       openGraph={{
         type: 'website',
@@ -29,7 +55,4 @@ const NextSEO = () => {
         ],
       }}
     />
-  );
-};
-
-export default NextSEO;
+ */

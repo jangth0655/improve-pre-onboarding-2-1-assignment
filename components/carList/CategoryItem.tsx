@@ -26,7 +26,7 @@ const CategoryItem = ({ category }: Props) => {
           activeSegment === category.segment
             ? 'bg-black text-white'
             : 'bg-gray',
-          'inline-block px-2 rounded-full transition-all'
+          'inline-block px-2 rounded-full transition-all cursor-pointer'
         )}
       >
         {category.text}

@@ -21,7 +21,7 @@ const CarItem = ({ car }: Props) => {
     <li
       onClick={() => onCarDetail(car.id)}
       key={car.id}
-      className='flex border-b-2 border-black p-4'
+      className='flex border-b-2 border-black p-4 cursor-pointer'
     >
       <div className='w-[60%] space-y-2'>
         <div className='flex flex-col font-bold'>

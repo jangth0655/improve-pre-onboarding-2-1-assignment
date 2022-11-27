@@ -22,7 +22,7 @@ const Detail: NextPage<{ carItem: CarListType; id: any }> = ({
 export const getServerSideProps = async (context: NextPageContext) => {
   const id = context.query.id;
   const res: CarList = await (
-    await fetch('https://preonboarding.platdev.net/api/cars')
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}`)
   ).json();
   const car = res?.payload.find((car) => car.id === Number(id));
 

@@ -229,3 +229,8 @@ $ npm start
   ```
 
 <br /><br />
+
+<img width="300" src="https://user-images.githubusercontent.com/83333409/204142631-82f5506a-e825-4d48-9113-fe887686c4eb.gif"/>
+
+
+<img width="300" alt="improve-assignment-2-SEO" src="https://user-images.githubusercontent.com/83333409/204142665-30e4bd1d-86ff-4ae6-aabc-e527e870a599.png">

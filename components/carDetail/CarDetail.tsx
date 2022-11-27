@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useCarItem, useCarList } from '../../hooks/useCarList';
+import { useCarItem } from '../../hooks/useCarList';
 
 import Layout from '../Layout';
 import InfoTitle from './infoLayout/InfoTitle';
@@ -9,14 +8,12 @@ import CarBrandWithName from './CarBrandWithName';
 import CarInfo from './CarInfo';
 import CarInsurance from './CarInsurance';
 import ExistenceTitle from '../carList/ExistenceTitle';
-import NextSEO from '../NextSEO';
 
 const CarDetail = () => {
   const { car, isLoading } = useCarItem();
 
   return (
     <Layout title='차량상세' back>
-      <NextSEO amount={car?.amount} attribute={car?.attribute} id={car?.id} />
       {isLoading ? (
         <ExistenceTitle title='불러오는 중입니다.' />
       ) : (

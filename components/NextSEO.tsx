@@ -1,26 +1,22 @@
 import { NextSeo } from 'next-seo';
-import { Attribute } from '../model/types';
+import { useCarItem } from '../hooks/useCarList';
 import formatter from '../utils/formatter';
 
-interface Props {
-  attribute?: Attribute;
-  amount?: number;
-  id?: number;
-}
+const NextSEO = () => {
+  const { car } = useCarItem();
 
-const NextSEO = ({ amount, attribute, id }: Props) => {
   return (
     <NextSeo
-      title={`${attribute?.brand} ${attribute?.name}`}
-      description={formatter.convertCurrency(amount)}
+      title={`${car?.attribute?.brand} ${car?.attribute?.name}`}
+      description={formatter.convertCurrency(car?.amount)}
       openGraph={{
         type: 'website',
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${id}`,
-        title: `${attribute?.brand} ${attribute?.name}`,
-        description: formatter.convertCurrency(amount),
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${car?.id}`,
+        title: `${car?.attribute?.brand} ${car?.attribute?.name}`,
+        description: formatter.convertCurrency(car?.amount),
         images: [
           {
-            url: attribute?.imageUrl ? attribute?.imageUrl : '',
+            url: car?.attribute?.imageUrl ? car?.attribute?.imageUrl : '',
             width: 1200,
             height: 600,
             type: 'image/*',

@@ -5,6 +5,8 @@ import formatter from '../utils/formatter';
 
 const NextSEO = () => {
   const { car } = useCarItem();
+  console.log(car?.attribute.imageUrl);
+  console.log(car);
 
   return (
     <NextSeo

@@ -182,4 +182,50 @@ $ npm start
   };
   ```
 
-  <br />
+  - SSR을 이용하여 SEO 적용
+
+  ```typescript
+  export const getServerSideProps = async (context: NextPageContext) => {
+    const id = context.query.id;
+    const res: CarList = await (
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}`)
+    ).json();
+    const car = res?.payload.find((car) => car.id === Number(id));
+
+    return {
+      props: {
+        carItem: car,
+        id,
+      },
+    };
+  };
+  ```
+
+  ```typescript
+  const NextSEO = ({ amount, attribute, id }: Props) => {
+    return (
+      <NextSeo
+        title={`${attribute.name} ${attribute.brand}`}
+        description={formatter.convertCurrency(amount)}
+        openGraph={{
+          type: 'website',
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/${id}`,
+          title: `${attribute?.brand} ${attribute?.name}`,
+          description: formatter.convertCurrency(amount),
+          images: [
+            {
+              url: attribute?.imageUrl
+                ? attribute?.imageUrl
+                : '/public/favicon.ico',
+              width: 1200,
+              height: 600,
+              type: 'image/*',
+            },
+          ],
+        }}
+      />
+    );
+  };
+  ```
+
+<br /><br />

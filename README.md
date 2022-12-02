@@ -16,7 +16,7 @@ $ npm install
 $ npm start
 ```
 
-[배포 링크 보러가기](https://improve-pre-onboarding-2-1-assignment.vercel.app/)
+[배포 링크](https://improve-pre-onboarding-2-1-assignment.vercel.app/)
 
 ✓ 모바일 사이즈에 맞게 제작하였습니다.
 
